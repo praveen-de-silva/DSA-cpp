@@ -11,14 +11,20 @@ void printArr(vector<int> arr) {
 }
 
 void bubbleSort(vector<int> arr) {
-    int temp;
+    int temp, flag=0;
     for (int j=arr.size()-1; j>0; j--) {
         for (int i=0; i<j; i++) {
             if (arr[i]>arr[i+1]) {
                 temp = arr[i];
                 arr[i] = arr[i+1];
                 arr[i+1] = temp;
+                flag=1;
             }
+        }
+
+        if (flag==0) {
+            break;
+            return;
         }
         printArr(arr);
     }
@@ -42,7 +48,7 @@ void insertionSort(vector<int> arr) {
 }
 
 int main() {
-    vector<int> myArr = {7,2,4,1,5,3};
+    vector<int> myArr = {1,2,3,4,5};
 
     // insertionSort(myArr);
     bubbleSort(myArr);
