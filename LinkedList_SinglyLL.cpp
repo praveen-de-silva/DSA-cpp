@@ -16,13 +16,20 @@ struct Node {
 class LinkedList {
     public :
         Node *head;
+        Node *tail;
         
         LinkedList() {
             head = nullptr;
+            tail = nullptr;
         }
         
         LinkedList(int value) {
             head = new Node(value);
+            tail = head;
+        }
+        
+        bool isEmpty() {
+            return (head == nullptr);
         }
         
         // insert an element
@@ -33,6 +40,12 @@ class LinkedList {
             }
             
             Node *newNode = new Node(value);
+            
+            if (isEmpty()) {
+                head = newNode;
+                tail = newNode;
+                return;
+            }
             
             if (index==0) {
                 newNode -> next = head;
@@ -57,6 +70,12 @@ class LinkedList {
             
             newNode -> next = temp -> next;
             temp -> next = newNode;
+            
+            if (newNode -> next == nullptr) {
+                tail = newNode;
+            }
+            
+            cout << "-- at insert | head : " << head->data << ", tail : " << tail->data << ", tail.next : " << ((tail -> next) == nullptr) << endl; 
         }
         
         // search an element
@@ -65,36 +84,58 @@ class LinkedList {
             
             while (temp != nullptr) {
                 if ((temp -> data)==target) {
+                    cout << "Found " << target << endl;
                     return temp;
                 }
                 
                 temp = temp -> next;
             }
+            cout << "Not found " << target << endl;
             return nullptr;
         }
         
         // delete an element
         void del(int value) {
-            Node *temp = head;
+            if (not(isEmpty())) {
             
-            if (temp -> data == value) {
-                head = temp -> next;
-                temp -> next = nullptr;
-            }
-            
-            while (temp -> next != nullptr) {
-                if (temp -> next -> data == value) {
-                    Node *delNode = temp -> next;
-                    temp -> next = delNode -> next;
-                    delete delNode;
-                    cout << "Deleted!" << endl;
+                Node *temp = head; 
+                
+                if (temp -> data == value) {
+                    head = temp -> next;
+                    
+                    if (head == nullptr) { // if now LL is empty
+                        tail = nullptr;
+                    }
+                    
+                    delete temp;
+                    cout << "Deleted " << value << endl;
                     return;
                 }
                 
-                temp = temp -> next;
+                while (temp -> next != nullptr) {
+                    if (temp -> next -> data == value) {
+                        Node *delNode = temp -> next;
+                        temp -> next = delNode -> next;
+                        
+                        if (delNode == tail) {
+                            tail = temp;
+                        }
+                        
+                        delete delNode;
+                        cout << "Deleted " << value << endl;
+                        return;
+                    }
+                    
+                    temp = temp -> next;
+                }
             }
-            cout << "Cannot delete!" << endl;
+            
+            cout << "Cannot delete " << value << endl;
+            
         }
+            
+            
+        
         
         // insert element
         void insert(int value) {
@@ -103,6 +144,7 @@ class LinkedList {
             // to insert en empty LL
             if (head==nullptr) {
                 head = newNode;
+                tail = newNode;
                 return;
             }
             
@@ -114,6 +156,7 @@ class LinkedList {
             }
             
             temp -> next = newNode;
+            tail = newNode;
         }
         
 };
@@ -132,26 +175,34 @@ void printLL(LinkedList &lList) {
 
 int main() {
     LinkedList myLL = LinkedList();
-    myLL.insert(55);
-    // myLL.insertAt(20,0);
-    // myLL.insertAt(44,1);
-    // myLL.insertAt(14,2);
-    // myLL.insertAt(40,3);
+    // myLL.insert(55);
+    myLL.insertAt(20,0);
+    myLL.insertAt(44,1);
+    myLL.insertAt(14,2);
+    myLL.insertAt(40,3);
     // myLL.insertAt(30,1);
     // myLL.insert(10,7);
+    cout << "Print arr : ";
+    
     printLL(myLL);
+    cout << "current tail : " << myLL.tail -> data << endl;
+    
     
     cout << "------ search ------" << endl;
-    Node *node = myLL.search(40);
-    cout << node->data << endl;
+    Node *node1 = myLL.search(40);
+    Node *node2 = myLL.search(4);
+    // cout << node->data << endl;
     
     
     cout << "------ delete ------" << endl;
     myLL.del(2);
+    myLL.del(20);
     printLL(myLL);
     
     cout << "------ insert ------" << endl;
     myLL.insert(2);
     printLL(myLL);
+    
+    
     return 0;
 }
