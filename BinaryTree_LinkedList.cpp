@@ -27,8 +27,8 @@ void traversePreOrder(struct Node *root) {
     // unless the tree is empty 
     if (root != nullptr) {
         cout << root -> key << " ";
-        traverseInOrder(root -> left);
-        traverseInOrder(root -> right);
+        traversePreOrder(root -> left);
+        traversePreOrder(root -> right);
     }
     return;
 }
@@ -36,8 +36,8 @@ void traversePreOrder(struct Node *root) {
 void traversePostOrder(struct Node *root) {
     // unless the tree is empty 
     if (root != nullptr) {
-        traverseInOrder(root -> left);
-        traverseInOrder(root -> right);
+        traversePostOrder(root -> left);
+        traversePostOrder(root -> right);
         cout << root -> key << " ";
     }
     return;
@@ -45,6 +45,10 @@ void traversePostOrder(struct Node *root) {
 
 // Insert a node
 struct Node *insertNode(struct Node *root, int key) {
+    if (root == nullptr) {
+        return new Node(key);
+    }
+
     struct Node *temp = root;
     struct Node *crnt = nullptr;
     
@@ -56,10 +60,6 @@ struct Node *insertNode(struct Node *root, int key) {
         } else {
             temp = temp -> right;
         }
-    }
-    
-    if (crnt == nullptr) {
-        return new Node(key);
     }
     
     if (crnt -> key > key) {
@@ -105,7 +105,6 @@ struct Node *deleteNode(struct Node *root, int key) {
         } 
         // case 02 : one child
         else if (root -> left == NULL) {
-            cout << root -> key << " ** ";
             struct Node *temp = root -> right;
             delete root;
             return temp;
@@ -123,6 +122,40 @@ struct Node *deleteNode(struct Node *root, int key) {
         }
     }
     return root;
+}
+
+void maxHeapify(struct Node *node) {
+    if (node == nullptr) {
+        return;
+    }
+    
+    Node *largest = node;
+    
+    if (node -> left != nullptr) {
+        if (node -> key < node -> left -> key) {
+            largest = node -> left;
+        } else {
+            largest = node;
+        }
+    }
+    
+    if (node -> right != nullptr) {
+        if (node -> key < node -> right -> key) {
+            largest = node -> right;
+        }
+    }
+    
+    
+    if (node != largest) {
+        // swap node & largest values
+        // int tempVal = largest -> key;
+        // largest ->key = node -> key;
+        // node -> key = tempVal;
+        swap(node -> key, largest -> key);
+        
+        // heapify the changed node
+        maxHeapify(largest);
+    }
 }
 
 
