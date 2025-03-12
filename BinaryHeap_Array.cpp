@@ -1,4 +1,6 @@
 #include <iostream>
+#include <sstream>
+#include <vector>
 
 using namespace std;
 
@@ -55,27 +57,46 @@ class Heap {
         }
         
         // build heap
-        void build
+        void buildHeapIter() {
+            for (int i = crntSize / 2 - 1; i >= 0; i--) {
+                heapify(i);
+            }
+        }
 };
 
 int main() {
-    Heap mh = Heap(7);
-    mh.insertKey(10);
-    mh.insertKey(20);
-    mh.insertKey(15);
-    mh.insertKey(5);
-    mh.insertKey(30);
-    mh.insertKey(45);
-    mh.insertKey(25);
+    string userInp;
+    vector<int> nums;
     
+    cout << "Enter space sep integers : ";
+    getline(cin, userInp);
+    
+    stringstream ss(userInp);
+    int num;
+    
+    // split user input and add them to 'nums'
+    while (ss >> num) {
+        nums.push_back(num);
+    }
+    
+    int countNums = nums.size(); // numbers count = heap size
+    Heap heap = Heap(countNums); // creating heap
+    
+    // add numbers to heap
+    for (int i=0; i < countNums; i++) {
+        heap.insertKey(nums[i]);    
+    }
+    
+    // before build Heap
     cout << "Before Heapify" << endl;
-    mh.printHeap();
+    heap.printHeap();
     cout << endl;
     
-    mh.heapify(2);
+    heap.buildHeapIter();
     
+    // after build Heap
     cout << "After Heapify" << endl;
-    mh.printHeap();
+    heap.printHeap();
     cout << endl;
 
     return 0;
