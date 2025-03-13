@@ -7,17 +7,24 @@ using namespace std;
 class Heap {
     int *hArr;
     int maxSize;
-    int crntSize = 0;
+    int crntSize;
+    
     
     public :
         
         Heap(int aMaxSize) {
             maxSize = aMaxSize;
+            crntSize = 0;
             hArr = new int[maxSize];
         }
         
         ~Heap() {
             delete[] hArr; // free alocated memory
+        }
+        
+        // get heap node key (since it is private)
+        int getKey(int i) {
+            return hArr[i];
         }
         
         void insertKey(int key) {
@@ -30,13 +37,26 @@ class Heap {
             crntSize++;
         }
         
+        void removeKey(int key) {
+            for (int i = 0; i < crntSize; i++) {
+                if (hArr[i] == key) {
+                    swap(hArr[i], hArr[crntSize-1]);
+                    crntSize--;
+                    heapify(i);
+                    return;
+                }
+            }
+            cout << "Remove fail!" << endl;
+        }
+        
         void printHeap() {
             for (int i=0; i < crntSize; i++) {
                 cout << hArr[i] << " ";
             }
+            cout << endl;
         }
         
-        // heapify a node
+        // heapify a node (for max-heap)
         void heapify(int k) {
             int l = 2 * k + 1;
             int r = 2 * k + 2;
@@ -62,46 +82,58 @@ class Heap {
                 heapify(i);
             }
         }
-};
-
-class HeapSort {
-    
+        
+        void heapSort() {
+            buildHeapIter();
+            int originalSize = crntSize;
+            
+            while (crntSize > 0) {
+                swap(hArr[0], hArr[crntSize-1]);
+                crntSize--; // to ignore the last node which is already sorted
+                heapify(0);
+            }
+            
+            crntSize = originalSize;
+        }
+        
+        // Heap Increase-Key
+        void increaseKey(int index, int key) {
+            if (hArr[index] < key) {
+                hArr[index] = key;
+            }
+            
+            int i = index;
+            while (i>0 && hArr[(i-1)/2] < hArr[i]) {
+                swap(hArr[(i-1)/2], hArr[i]);
+                i = (i-1)/2;
+            }
+        }
+        
+        
+        
 };
 
 int main() {
-    string userInp;
-    vector<int> nums;
+    Heap mh = Heap(7);
     
-    cout << "Enter space sep integers : ";
-    getline(cin, userInp);
+    mh.insertKey(40);
+    mh.insertKey(70);
+    mh.insertKey(50);
+    mh.insertKey(60);
+    mh.insertKey(30);
+    mh.insertKey(10);
+    mh.insertKey(20);
     
-    stringstream ss(userInp);
-    int num;
+    mh.buildHeapIter();
+    mh.printHeap();
     
-    // split user input and add them to 'nums'
-    while (ss >> num) {
-        nums.push_back(num);
-    }
+    mh.increaseKey(5, 55);
+    cout << "\nAfter increase 30 -> 55" << endl;
+    mh.printHeap();
     
-    int countNums = nums.size(); // numbers count = heap size
-    Heap heap = Heap(countNums); // creating heap
+    mh.removeKey(55);
+    cout << "\nAfter remove 55" << endl;
+    mh.printHeap();
     
-    // add numbers to heap
-    for (int i=0; i < countNums; i++) {
-        heap.insertKey(nums[i]);    
-    }
-    
-    // before build Heap
-    cout << "Before Heapify" << endl;
-    heap.printHeap();
-    cout << endl;
-    
-    heap.buildHeapIter();
-    
-    // after build Heap
-    cout << "After Heapify" << endl;
-    heap.printHeap();
-    cout << endl;
-
     return 0;
 }
