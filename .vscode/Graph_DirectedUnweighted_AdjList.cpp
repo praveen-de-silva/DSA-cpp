@@ -68,6 +68,8 @@ struct Graph
         time++;
         timeDiscover[node.label-1] = time;
 
+        cout << "visited : " << node.label << endl;
+
         for (int adjNodeVal : node.neighbours) {
             if (color[adjNodeVal] == 'w') {
                 parent[adjNodeVal] = node.label;
@@ -111,17 +113,23 @@ void printIntArr(vector<int> &arr) {
 
 int main() {
     try {
-        Graph gp = Graph(3);
+        Graph gp = Graph(7);
         gp.addEdge(1, 2);
-        printIntArr(gp.timeDiscover);
         gp.addEdge(1, 3);
+        gp.addEdge(2, 4);
+        gp.addEdge(2, 5);
+        gp.addEdge(3, 6);
+        gp.addEdge(3, 7);
         
         gp.printGraph();
 
-        gp.DFS();
-        printArr(gp.color);
-        printIntArr(gp.timeDiscover);
-        printIntArr(gp.timeFinish);
+        // gp.DFS();
+        // printArr(gp.color);
+        // printIntArr(gp.timeDiscover);
+        // printIntArr(gp.timeFinish);
+
+        cout << "=== Visiting ===" << endl;
+        gp.DFS_visit(gp.nodes[2]);
 
     } catch(...) {
         cout << "Error!" << endl;
