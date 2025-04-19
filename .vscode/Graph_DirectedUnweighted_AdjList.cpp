@@ -27,14 +27,14 @@ struct Graph
 
         for (int i = 0; i < n; i++) {
             nodes[i].label = i+1;
-
-            // for DFS
-            time = 0;
-            color = vector<char> (n, 'w');
-            parent = vector<int> (n, NULL);
-            timeDiscover = vector<int> (n, 0);
-            timeFinish = vector<int> (n, 0);
         }
+
+        // for DFS
+        time = 0;
+        color = vector<char> (n, 'w');
+        parent = vector<int> (n, -1);
+        timeDiscover = vector<int> (n, 0);
+        timeFinish = vector<int> (n, 0);
     }
 
     ~Graph() {
@@ -97,19 +97,19 @@ struct Graph
     
 };
 
-void printArr(vector<char> &arr) {
-    for (char color : arr) {
-        cout << color << " ";
-    }
-    cout << endl;
-}
+// void printArr(vector<char> &arr) {
+//     for (char color : arr) {
+//         cout << color << " ";
+//     }
+//     cout << endl;
+// }
 
-void printIntArr(vector<int> &arr) {
-    for (int val : arr) {
-        cout << val << " ";
-    }
-    cout << endl;
-}
+// void printIntArr(vector<int> &arr) {
+//     for (int val : arr) {
+//         cout << val << " ";
+//     }
+//     cout << endl;
+// }
 
 int main() {
     try {
