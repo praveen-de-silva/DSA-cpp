@@ -70,12 +70,11 @@ int main() {
     
     Graph gp(4);
     
-    gp.addEdge(0, 1, 20);
+    gp.addEdge(0, 1, 1);
+    gp.addEdge(1, 2, 150);
+    gp.addEdge(2, 3, 99);
+    gp.addEdge(0, 3, 100);
     gp.addEdge(0, 2, 200);
-    gp.addEdge(0, 3, 50);
-    gp.addEdge(1, 2, 70);
-    gp.addEdge(1, 3, 100);
-    gp.addEdge(2, 3, 60);
     
     gp.kruskal();
     gp.printGraph();
