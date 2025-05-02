@@ -44,6 +44,9 @@ public:
         
         for (int count=0; count<size; ++count) {
             int u = getMinVertex(visited, dist);
+            if (u == -1) {
+                break;
+            }
             
             visited[u] = true;
             cout << u << "  " << dist[u] << endl;
