@@ -32,6 +32,7 @@ public:
     void relax(int u, int v, int w) {
         if (dist[v] > dist[u] + w) {
             dist[v] = dist[u] + w;
+            parents[v] = u;
         }
     }
     
