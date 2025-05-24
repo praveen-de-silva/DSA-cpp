@@ -53,7 +53,7 @@ class Graph {
         }
 
         vertex.color = BLACK;
-        time++;
+        time++;//
         vertex.timefinish = time;
     }
 
